@@ -1,0 +1,11 @@
+Features:
+good board graphics / peieces 
+timer
+current player display
+animation for which slot you are hovering over
+drop piece animation, including bounce
+sound effects on drop and on bounce
+bg music, turn on and off with button
+pop up when you win displaying results and time, replay button, dont pop up for a few seconds to show winning pieces animation
+shiny piece animation on win, highlighting the winning connect 4 peieces
+restart button in game
