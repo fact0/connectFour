@@ -1,4 +1,9 @@
 /* game board table */
+@font-face {
+	font-family: moonhouse;
+	src: url(font/moonhouse.ttf)
+}
+
 body {
 	background: rgb(241, 64, 28);
 	background: linear-gradient(
@@ -7,6 +12,54 @@ body {
 		rgba(255, 246, 0, 1) 33%,
 		rgba(220, 241, 28, 1) 67%
 	);
+	overflow: hidden;
+}
+
+#start {
+	height: 90vh;
+	font-family: "maldini";
+	color: #000000;
+	position: relative;
+}
+
+#title {
+	font-size: 8rem;
+	perspective: 600px;
+}
+
+#title > p {
+	transform: rotateX(45deg);
+	padding: 20px;
+	margin: 20px;
+	line-height: 0.75;
+	text-align: center;
+	color: #000000;
+}
+
+#start.playing {
+	margin-top: -90vh;
+}
+
+#start.playing + #game {
+	display: flex;
+}
+
+.btn {
+	background-color: #ffe02e;
+	color:black;
+	border: none;
+}
+
+.btn:hover {
+	cursor: pointer;
+	background-color: #c7af26;
+	transition-duration: 0.5s;
+	border: none;
+}
+
+.start-container {
+	flex-wrap: wrap;
+	margin-top: 15%;
 }
 .container {
 	position: relative;
@@ -56,7 +109,6 @@ body {
 	border-radius: 50%;
 	display: inline-block;
 	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
-	/* background: linear-gradient(45deg,  rgb(223, 103, 103) 0%,rgb(249, 232, 232) 56%,rgb(231, 116, 116) 96%); */
 	border-top: 1px solid rgba(255, 255, 255, 0.3);
 	border-left: 1px solid rgba(255, 255, 255, 0.3);
 	border-bottom: 1px solid rgba(209, 156, 53, 0.3);
@@ -72,6 +124,35 @@ body {
 	background-color: blue;
 }
 
+#end {
+	display: none;
+}
+
+#end.game-over {
+	display: flex;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.75);
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	flex-direction: column;
+	align-items: center;
+	color: white;
+	justify-content: space-around;
+	font-family: "maldini";
+	text-align: center;
+	z-index: 5;
+}
+
+#end h1 {
+	font-size: 10rem;
+}
+
+#end h4 {
+	font-size: 5rem;
+}
+
 @keyframes shiny {
 	from {
 		opacity: 0;
@@ -83,12 +164,6 @@ body {
 		transition-timing-function: ease;
 	}
 }
-/* .shiny {
-	animation-duration: 1.2s;
-	animation-name: shiny-animation;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-} */
 
 /*newly added items start faded out and translated 400px upwards on the y-axis*/
 
