@@ -4,6 +4,7 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
+bgMusic()
 
 const WIDTH = 7;
 const HEIGHT = 6;
@@ -26,28 +27,23 @@ function makeBoard() {
 
 function makeHtmlBoard() {
 	// TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-	const board = document.querySelector("#board");
+	const board = document.querySelector(".grid-container");
 	// TODO: add comment for this code
-	const top = document.createElement("tr");
-	top.setAttribute("id", "column-top");
-	top.addEventListener("click", handleClick);
-
 	for (let x = 0; x < WIDTH; x++) {
-		const headCell = document.createElement("td");
-		headCell.setAttribute("id", x);
-		top.append(headCell);
+		const top = document.createElement("div");
+		top.classList.add("top");
+		top.setAttribute("id", `${x}`);
+		top.addEventListener("click", handleClick);
+		board.append(top);
 	}
-	board.append(top);
 
 	// create main layout of board:
 	for (let y = 0; y < HEIGHT; y++) {
-		const row = document.createElement("tr");
 		for (let x = 0; x < WIDTH; x++) {
-			const cell = document.createElement("td");
+			const cell = document.createElement("div");
 			cell.setAttribute("id", `${y}-${x}`);
-			row.append(cell);
+			board.append(cell);
 		}
-		board.append(row);
 	}
 }
 
@@ -68,16 +64,23 @@ function placeInTable(y, x) {
 	const piece = document.createElement("div");
 	piece.classList.add("piece");
 	piece.classList.add(`p${currPlayer}`);
+	piece.classList.add("p-drop");
 	piece.style.top = -50 * (y + 2);
 
 	const spot = document.getElementById(`${y}-${x}`);
 	spot.append(piece);
+	let drop = new sound("sound/drop.wav");
+	drop.play();
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
-	alert(msg);
+	let win = new sound("sound/win.wav");
+	win.play();
+	setInterval(() => {
+		alert(msg);
+	}, 500);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -126,11 +129,9 @@ function checkForWin() {
 				winners.push([y, x]);
 			}
 		});
-		console.log(winners);
 		for (i = 0; i < winners.length; i++) {
 			let y = winners[i][0];
 			let x = winners[i][1];
-			console.log(y, x);
 			document.getElementById(`${y}-${x}`).childNodes[0].classList.add("shiny");
 		}
 	}
@@ -191,5 +192,27 @@ function checkForWin() {
 	}
 }
 
+function sound(src) {
+	this.sound = document.createElement("audio");
+	this.sound.src = src;
+	this.sound.setAttribute("preload", "auto");
+	this.sound.setAttribute("controls", "none");
+	this.sound.style.display = "none";
+	document.body.appendChild(this.sound);
+	this.play = function () {
+		this.sound.play();
+	};
+	this.stop = function () {
+		this.sound.pause();
+	};
+}
+
+function bgMusic() {
+	var bgMusic = new sound("sound/bg.wav");
+	bgMusic.play();
+	bgMusic.sound.loop = true;
+}
+
 makeBoard();
 makeHtmlBoard();
+
