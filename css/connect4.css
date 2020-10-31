@@ -1,24 +1,19 @@
 /* game board table */
 @font-face {
-	font-family: moonhouse;
-	src: url(font/moonhouse.ttf)
+	font-family: maldini;
+	src: url("../font/maldiniStyle.ttf");
 }
-
+* {
+	margin: 0;
+	padding: 0;
+}
 body {
-	background: rgb(241, 64, 28);
-	background: linear-gradient(
-		0deg,
-		rgba(241, 64, 28, 0.30120798319327735) 10%,
-		rgba(255, 246, 0, 1) 33%,
-		rgba(220, 241, 28, 1) 67%
-	);
+	background: linear-gradient(0deg, rgba(99,28,241,1) 12%, rgba(28,241,170,1) 78%);
 	overflow: hidden;
 }
 
 #start {
 	height: 90vh;
-	font-family: "maldini";
-	color: #000000;
 	position: relative;
 }
 
@@ -28,9 +23,11 @@ body {
 }
 
 #title > p {
-	transform: rotateX(45deg);
+	transform: rotateX(15deg);
+	font-family: "maldini";
 	padding: 20px;
 	margin: 20px;
+	font-size: 200px;
 	line-height: 0.75;
 	text-align: center;
 	color: #000000;
@@ -40,24 +37,26 @@ body {
 	margin-top: -90vh;
 }
 
-#start.playing + #game {
-	display: flex;
+#start-button {
+	font-size: 50px;
 }
 
+
 .btn {
-	background-color: #ffe02e;
-	color:black;
+	background-color: #1c62f1;
+	color:white;
 	border: none;
 }
 
 .btn:hover {
 	cursor: pointer;
-	background-color: #c7af26;
+	background-color: #0f347c;
 	transition-duration: 0.5s;
 	border: none;
 }
 
 .start-container {
+	font-family: "maldini";
 	flex-wrap: wrap;
 	margin-top: 15%;
 }
@@ -82,7 +81,7 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	top: 85px;
-	left: 17px;
+	left: 18px;
 	right: 0;
 	bottom: 15px;
 	z-index: 1;
@@ -104,8 +103,8 @@ body {
 .piece {
 	margin: 4px;
 	padding: 0px;
-	width: 106%;
-	height: 106%;
+	width: 109%;
+	height: 109%;
 	border-radius: 50%;
 	display: inline-block;
 	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
@@ -131,7 +130,7 @@ body {
 #end.game-over {
 	display: flex;
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: rgba(0, 0, 0, 0.70);
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -146,11 +145,11 @@ body {
 }
 
 #end h1 {
-	font-size: 10rem;
+	font-size: 200px;
 }
 
-#end h4 {
-	font-size: 5rem;
+#restart-button {
+	font-size: 50px;
 }
 
 @keyframes shiny {
@@ -209,4 +208,21 @@ body {
 	animation-delay: 0s, 0s;
 	animation-iteration-count: 1, infinite;
 	animation-direction: forwards, alternate;
+}
+
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+	animation-duration: 2s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

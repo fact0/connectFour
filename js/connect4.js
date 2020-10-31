@@ -208,12 +208,15 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function startGame() {
+		let container = document.querySelector('.container');
 		bgMusic.play();
 		bgMusic.sound.loop = true;
 		makeBoard();
 		makeHtmlBoard();
-		// start.classList.remove("restart")
 		start.classList.add("playing");
+		console.log(start);
+		container.classList.add("fade-in");
+
 	}
 
 	function clearPieces() {
