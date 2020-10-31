@@ -11,6 +11,27 @@ body {
 	background: linear-gradient(0deg, rgba(99,28,241,1) 12%, rgba(28,241,170,1) 78%);
 	overflow: hidden;
 }
+#mute-btn {
+	position: absolute;
+	display: inline;
+	right: 0px;
+	top: 0px;
+	width: 100px;
+	height: 100px;
+}
+
+#mute-btn img {
+	width: 100px;
+	height: 100px;
+	/* display: none; */
+}
+
+#mute-btn img.pressed {
+	filter: invert(1);
+	width: 100px;
+	height: 100px;
+	/* display: none; */
+}
 
 #start {
 	height: 90vh;
@@ -63,6 +84,8 @@ body {
 .container {
 	position: relative;
 	box-sizing: border-box;
+	margin: auto;
+	padding: auto;
 	width: 100%;
 	height: 100%;
 	display: flex;

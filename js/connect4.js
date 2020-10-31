@@ -206,13 +206,27 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.sound.volume = 1;
 		};
 	}
-
+	
+	function muteButton(){
+		let muteBtn = document.querySelector("#mute-btn img");
+		muteBtn.addEventListener('click', () => {
+			if(muteBtn.classList.contains('pressed')){
+				muteBtn.classList.toggle('pressed');
+				bgMusic.play()
+			}
+			else {
+			muteBtn.classList.toggle('pressed');
+			bgMusic.stop()
+			}
+		})
+	}
 	function startGame() {
 		let container = document.querySelector('.container');
 		bgMusic.play();
 		bgMusic.sound.loop = true;
 		makeBoard();
 		makeHtmlBoard();
+		muteButton();
 		start.classList.add("playing");
 		console.log(start);
 		container.classList.add("fade-in");
