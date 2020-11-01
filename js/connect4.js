@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	let currPlayer = 1; // active player: 1 or 2
 	let board = [];
 	let bgMusic = new sound("sound/bg.mp3");
+	let optionBtns = document.querySelectorAll(".option-btn img");
+	let muteBtn = document.querySelector("#mute-button img");
+	let resetBtn = document.querySelector("#reset-button img");
+	let paintBtn = document.querySelector("#paint-button img");
 
 	let startBtn = document.getElementById("start-button");
 	startBtn.addEventListener("click", startGame);
@@ -66,15 +70,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function placeInTable(y, x) {
 		const piece = document.createElement("div");
+		let drop = new sound("sound/drop.wav");
+		if (!muteBtn.classList.contains("pressed")) {
+			drop.play();
+		}
 		piece.classList.add("piece");
+		if (!paintBtn.classList.contains("pressed")) {
+			piece.classList.add(`p${currPlayer}`);
+		} else if (paintBtn.classList.contains("pressed")) {
+			if (currPlayer === 1) {
+				piece.classList.add(`p${currPlayer}`);
+			} else if (currPlayer === 2) {
+				piece.classList.add(`old`);
+			}
+		}
 		piece.classList.add(`p${currPlayer}`);
 		piece.classList.add("p-drop");
 		piece.style.top = -50 * (y + 2);
 
 		const spot = document.getElementById(`${y}-${x}`);
 		spot.append(piece);
-		let drop = new sound("sound/drop.wav");
-		drop.play();
 	}
 
 	/** handleClick: handle click of column top to play piece */
@@ -105,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// switch players
 		currPlayer = currPlayer === 1 ? 2 : 1;
+		currentPlayerClick();
 	}
 
 	/** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -206,37 +222,85 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.sound.volume = 1;
 		};
 	}
-	
-	function muteButton(){
-		let muteBtn = document.querySelector("#mute-btn img");
-		muteBtn.addEventListener('click', () => {
-			if(muteBtn.classList.contains('pressed')){
-				muteBtn.classList.toggle('pressed');
-				bgMusic.play()
+
+	function muteButton() {
+		muteBtn.addEventListener("click", () => {
+			if (muteBtn.classList.contains("pressed")) {
+				muteBtn.classList.toggle("pressed");
+				bgMusic.play();
+			} else {
+				muteBtn.classList.toggle("pressed");
+				bgMusic.stop();
 			}
-			else {
-			muteBtn.classList.toggle('pressed');
-			bgMusic.stop()
-			}
-		})
+		});
 	}
+
+	function resetButton() {
+		resetBtn.addEventListener("click", () => {
+			resetBtn.classList.toggle("pressed");
+			clearPieces();
+			makeBoard();
+			makeHtmlBoard();
+		});
+	}
+
+	function currentPlayerIcon() {
+		let currPlayerIcon = document.querySelector("#current-p");
+		currPlayerIcon.classList.add("piece");
+		currPlayerIcon.classList.add(`p${currPlayer}`);
+		currPlayerIcon.classList.add("fade-in");
+	}
+	function currentPlayerClick() {
+		let currPlayerIcon = document.querySelector("#current-p");
+		if (paintBtn.classList.contains("pressed")) {
+			currPlayerIcon.classList.remove("p2");
+			currPlayerIcon.classList.toggle("p1");
+			currPlayerIcon.classList.toggle("old");
+		} else if (!paintBtn.classList.contains("pressed")) {
+			currPlayerIcon.classList.remove("old");
+			currPlayerIcon.classList.toggle("p1");
+			currPlayerIcon.classList.toggle("p2");
+		}
+	}
+
+	function paintButton() {
+		let boardImg = document.querySelector("#front img");
+		paintBtn.addEventListener("click", () => {
+			if (paintBtn.classList.contains("pressed")) {
+				paintBtn.classList.toggle("pressed");
+				boardImg.setAttribute("src", "img/boardSmallest.png");
+			} else {
+				paintBtn.classList.toggle("pressed");
+				boardImg.setAttribute("src", "img/boardSmallestOld.png");
+			}
+			clearPieces();
+			makeBoard();
+			makeHtmlBoard();
+		});
+	}
+
 	function startGame() {
-		let container = document.querySelector('.container');
+		let container = document.querySelector(".container");
 		bgMusic.play();
 		bgMusic.sound.loop = true;
 		makeBoard();
 		makeHtmlBoard();
 		muteButton();
+		paintButton();
+		resetButton();
 		start.classList.add("playing");
-		console.log(start);
+		for (img of optionBtns) {
+			img.classList.add("playing");
+			img.classList.add("fade-in");
+		}
+		currentPlayerIcon();
 		container.classList.add("fade-in");
-
 	}
 
 	function clearPieces() {
 		let game = document.getElementById("game");
 		board = [];
-		game.innerHTML = '';
+		game.innerHTML = "";
 	}
 
 	function restartGame() {
@@ -255,7 +319,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		let message = document.getElementById("message");
 		let end = document.getElementById("end");
 		bgMusic.duck();
-		win.play();
+		if (!muteBtn.classList.contains("pressed")) {
+			win.play();
+		}
 		message.innerText = `${msg}`;
 		end.classList.add("game-over");
 		restartGame();

@@ -3,34 +3,55 @@
 	font-family: maldini;
 	src: url("../font/maldiniStyle.ttf");
 }
-* {
-	margin: 0;
-	padding: 0;
+html {
+	margin: 0px;
+	width: 100%;
 }
+
 body {
-	background: linear-gradient(0deg, rgba(99,28,241,1) 12%, rgba(28,241,170,1) 78%);
+	margin: 0px;
+	min-width: 100%;
+	width: 100%;
+}
+
+body {
+	background: linear-gradient(
+		0deg,
+		rgba(99, 28, 241, 1) 12%,
+		rgba(28, 241, 170, 1) 78%
+	);
 	overflow: hidden;
 }
-#mute-btn {
+
+.option-container {
+	
 	position: absolute;
-	display: inline;
+	display: block;
 	right: 0px;
 	top: 0px;
 	width: 100px;
-	height: 100px;
+	height: 300px;
 }
 
-#mute-btn img {
+.option-btn img {
+	display: none;
+
+}
+.option-btn img.playing {
+	display: block;
 	width: 100px;
 	height: 100px;
-	/* display: none; */
+
 }
 
-#mute-btn img.pressed {
+.option-btn img.pressed {
 	filter: invert(1);
-	width: 100px;
-	height: 100px;
-	/* display: none; */
+}
+
+#current-p {
+	display: block;
+	width: 95px;
+	height: 95px;
 }
 
 #start {
@@ -62,10 +83,9 @@ body {
 	font-size: 50px;
 }
 
-
 .btn {
 	background-color: #1c62f1;
-	color:white;
+	color: white;
 	border: none;
 }
 
@@ -83,6 +103,7 @@ body {
 }
 .container {
 	position: relative;
+	display: inline-block;
 	box-sizing: border-box;
 	margin: auto;
 	padding: auto;
@@ -139,11 +160,15 @@ body {
 }
 
 .piece.p1 {
-	background-color: red;
+	background-color: #f11c40;
 }
 
 .piece.p2 {
-	background-color: blue;
+	background-color: #f1df1c;
+}
+
+.piece.old {
+	background-color: black;
 }
 
 #end {
@@ -153,7 +178,7 @@ body {
 #end.game-over {
 	display: flex;
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.70);
+	background-color: rgba(0, 0, 0, 0.7);
 	top: 0;
 	bottom: 0;
 	left: 0;

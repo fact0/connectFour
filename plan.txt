@@ -1,11 +1,26 @@
 Features:
-good board graphics / peieces 
+good piece graphics
 timer
-current player display
-animation for which slot you are hovering over
+connect 4 peieces
+
+
+finished:
+good board graphics
 drop piece animation, including bounce
 sound effects on drop and on bounce
 bg music, turn on and off with button
-pop up when you win displaying results and time, replay button, dont pop up for a few seconds to show winning pieces animation
-shiny piece animation on win, highlighting the winning connect 4 peieces
+animation for which slot you are hovering over
+pallete swap
+pallete swap buttons
 restart button in game
+
+more features:
+smaller board pngs for media queries
+media queries for at least some phones
+three.js space screensaver background
+
+fixes:
+-shiny piece animation on win, improve effect
+-pop up when you win displaying results and time, replay button, dont pop up for a few seconds to show animation
+-button design
+-slot hover animation
