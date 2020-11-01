@@ -14,6 +14,7 @@ restart button in game
 -player piece bug
 -slot hover animation
 -button design
+-comments
 
 more features:
 smaller board pngs for media queries
@@ -22,4 +23,4 @@ three.js space screensaver background
 
 
 fixes:
--comments
+-refactor

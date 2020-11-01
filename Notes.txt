@@ -1,0 +1,3 @@
+Time Taken: ~20hr
+
+Notes: Implemented all the little ideas I had for this so I'm pretty satisfied, don't think it took too long considering having to learn some css grid and animation properties. The code could probably be cleaned up and improved quite a bit tho.

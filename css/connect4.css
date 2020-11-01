@@ -1,4 +1,4 @@
-/* game board table */
+/* add custom font */
 @font-face {
 	font-family: maldini;
 	src: url("../font/maldiniStyle.ttf");
@@ -13,7 +13,7 @@ body {
 	min-width: 100%;
 	width: 100%;
 }
-
+/* gradient wraps in such a way to make it look like the game is on a flat surface, so i left it repeating */
 body {
 	background: linear-gradient(
 		0deg,
@@ -23,6 +23,7 @@ body {
 	overflow: hidden;
 }
 
+/* box for option icons */
 .option-container {
 	position: absolute;
 	display: block;
@@ -32,25 +33,26 @@ body {
 	height: 300px;
 }
 
+/* hide on title screen */
 .option-btn img {
 	display: none;
 }
+/* used to fade in buttons on game board transition */
 .option-btn img.playing {
 	display: block;
 	width: 100px;
 	height: 100px;
 }
-
+/* invents icon color */
 .option-btn img.pressed {
 	filter: invert(1);
 }
-
+/* current play icon  */
 #current-p {
 	display: block;
 	width: 90px;
 	height: 90px;
 }
-
 
 #start {
 	height: 90vh;
@@ -73,6 +75,7 @@ body {
 	color: #000000;
 }
 
+/* transitions from start title to game board, uses fade in chained on */
 #start.playing {
 	margin-top: -90vh;
 }
@@ -94,11 +97,14 @@ body {
 	border: none;
 }
 
+/* wraps start button and title */
 .start-container {
 	font-family: "maldini";
 	flex-wrap: wrap;
 	margin-top: 15%;
 }
+
+/* wraps whole app */
 .container {
 	position: relative;
 	display: inline-block;
@@ -111,6 +117,7 @@ body {
 	justify-content: center;
 }
 
+/* css grid container used for game board cells and pieces */
 .grid-container {
 	display: grid;
 	grid-template-columns: repeat(7, 85px);
@@ -118,6 +125,7 @@ body {
 	gap: 25px 25px;
 }
 
+/* game board png, z-index to front */
 #front img {
 	position: absolute;
 	margin-left: auto;
@@ -130,8 +138,7 @@ body {
 	height: auto;
 }
 
-/* column-top is table row of clickable areas for each column */
-
+/* top is grid container row of clickable areas for each element */
 .top {
 	margin-left: 10px;
 	width: 100%;
@@ -144,6 +151,7 @@ body {
 	background-color: #f1401c;
 }
 
+/* piece design styles, will try to make more like a game piece in the future */
 .piece {
 	margin: 4px;
 	padding: 0px;
@@ -159,6 +167,7 @@ body {
 	box-shadow: inset 0px 0px 2px 2px rgba(153, 106, 26, 0.05);
 }
 
+/* piece color classes */
 .piece.p1 {
 	background-color: #f11c40;
 }
@@ -170,11 +179,12 @@ body {
 .piece.old {
 	background-color: black;
 }
-
+/* hides game over */
 #end {
 	display: none;
 }
 
+/* game over overlay */
 #end.game-over {
 	display: flex;
 	position: absolute;
@@ -200,6 +210,7 @@ body {
 	font-size: 50px;
 }
 
+/* animation effect to modulate opacity, to be applied to winning combinations of game board pieces */
 @keyframes shiny {
 	0% {
 		opacity: 0;
@@ -218,14 +229,14 @@ body {
 	}
 }
 
-/*newly added items start faded out and translated 400px upwards on the y-axis*/
-
+/* newly added pieces start faded out and translated 400px upwards on the y-axis then drops, has a little bounce effect at 30% and 55% keyframes*/
 @keyframes drop {
 	0% {
 		opacity: 0;
 		transform: translateY(-400px);
 	}
 	10% {
+		opacity: 1;
 		transform: translateY(0);
 	}
 	30% {
@@ -250,10 +261,13 @@ body {
 	}
 }
 
+/* class to add drop effect to game piece */
 .p-drop {
 	opacity: 0;
 	animation: drop 0.5s linear 0s 1 forwards;
 }
+
+/* chains shiny animation onto p-drop, if .p-drop is removed pieces bug out, so it works better to just apply it on top, to be used with winning pieces combination */
 .p-drop.shiny {
 	opacity: 0;
 	animation-name: drop, shiny;
@@ -263,7 +277,7 @@ body {
 	animation-iteration-count: 1, infinite;
 	animation-direction: forwards, forwards;
 }
-
+/* fades opacity from 0 to 1 over 2 seconds */
 .fade-in {
 	opacity: 1;
 	animation-name: fadeInOpacity;
@@ -272,6 +286,7 @@ body {
 	animation-duration: 2s;
 }
 
+/* same but faster, 1 second */
 .fade-in-fast {
 	opacity: 1;
 	animation-name: fadeInOpacity;
@@ -280,6 +295,7 @@ body {
 	animation-duration: 1s;
 }
 
+/* keyframes for fade in, goes from 0 to 1 opacity */
 @keyframes fadeInOpacity {
 	0% {
 		opacity: 0;
