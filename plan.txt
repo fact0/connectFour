@@ -1,8 +1,4 @@
 Features:
-good piece graphics
-timer
-connect 4 peieces
-
 
 finished:
 good board graphics
@@ -13,14 +9,17 @@ animation for which slot you are hovering over
 pallete swap
 pallete swap buttons
 restart button in game
+-pop up when you win displaying results and time, replay button, dont pop up for a few seconds to show animation
+-shiny piece animation on win, improve effect
+-player piece bug
+-slot hover animation
+-button design
 
 more features:
 smaller board pngs for media queries
 media queries for at least some phones
 three.js space screensaver background
 
+
 fixes:
--shiny piece animation on win, improve effect
--pop up when you win displaying results and time, replay button, dont pop up for a few seconds to show animation
--button design
--slot hover animation
+-comments

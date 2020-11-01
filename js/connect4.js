@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// check for win
 		if (checkForWin()) {
-			return endGame(`Player ${currPlayer} won!`);
+			return endGame(`Player ${currPlayer} wins!`);
 		}
 
 		// check for tie
@@ -236,11 +236,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function resetButton() {
-		resetBtn.addEventListener("click", () => {
+		resetBtn.addEventListener("mousedown", () => {
 			resetBtn.classList.toggle("pressed");
 			clearPieces();
 			makeBoard();
 			makeHtmlBoard();
+		});
+		resetBtn.addEventListener("mouseup", () => {
+			resetBtn.classList.toggle("pressed");
 		});
 	}
 
@@ -252,18 +255,31 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 	function currentPlayerClick() {
 		let currPlayerIcon = document.querySelector("#current-p");
-		if (paintBtn.classList.contains("pressed")) {
-			currPlayerIcon.classList.remove("p2");
-			currPlayerIcon.classList.toggle("p1");
-			currPlayerIcon.classList.toggle("old");
-		} else if (!paintBtn.classList.contains("pressed")) {
-			currPlayerIcon.classList.remove("old");
-			currPlayerIcon.classList.toggle("p1");
-			currPlayerIcon.classList.toggle("p2");
+		if (!paintBtn.classList.contains("pressed")) {
+			if (currPlayer === 1) {
+				currPlayerIcon.classList.remove("old");
+				currPlayerIcon.classList.remove("p2");
+				currPlayerIcon.classList.add("p1");
+			} else if (currPlayer === 2) {
+				currPlayerIcon.classList.remove("old");
+				currPlayerIcon.classList.remove("p1");
+				currPlayerIcon.classList.add("p2");
+			}
+		} else if (paintBtn.classList.contains("pressed")) {
+			if (currPlayer === 1) {
+				currPlayerIcon.classList.remove("p2");
+				currPlayerIcon.classList.remove("old");
+				currPlayerIcon.classList.add("p1");
+			} else if (currPlayer === 2) {
+				currPlayerIcon.classList.remove("p2");
+				currPlayerIcon.classList.remove("p1");
+				currPlayerIcon.classList.add("old");
+			}
 		}
 	}
 
 	function paintButton() {
+		let currPlayerIcon = document.querySelector("#current-p");
 		let boardImg = document.querySelector("#front img");
 		paintBtn.addEventListener("click", () => {
 			if (paintBtn.classList.contains("pressed")) {
@@ -272,6 +288,27 @@ document.addEventListener("DOMContentLoaded", function () {
 			} else {
 				paintBtn.classList.toggle("pressed");
 				boardImg.setAttribute("src", "img/boardSmallestOld.png");
+			}
+			if (!paintBtn.classList.contains("pressed")) {
+				if (currPlayer === 1) {
+					currPlayerIcon.classList.remove("old");
+					currPlayerIcon.classList.remove("p2");
+					currPlayerIcon.classList.add("p1");
+				} else if (currPlayer === 2) {
+					currPlayerIcon.classList.remove("old");
+					currPlayerIcon.classList.remove("p1");
+					currPlayerIcon.classList.add("p2");
+				}
+			} else if (paintBtn.classList.contains("pressed")) {
+				if (currPlayer === 1) {
+					currPlayerIcon.classList.remove("p2");
+					currPlayerIcon.classList.remove("old");
+					currPlayerIcon.classList.add("p1");
+				} else if (currPlayer === 2) {
+					currPlayerIcon.classList.remove("p2");
+					currPlayerIcon.classList.remove("p1");
+					currPlayerIcon.classList.add("old");
+				}
 			}
 			clearPieces();
 			makeBoard();
@@ -309,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		btn.addEventListener("click", () => {
 			clearPieces();
 			end.classList.remove("game-over");
+			end.classList.remove("fade-in-fast");
 			makeBoard();
 			makeHtmlBoard();
 			bgMusic.full();
@@ -324,6 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		message.innerText = `${msg}`;
 		end.classList.add("game-over");
+		end.classList.add("fade-in-fast");
 		restartGame();
 	}
 });
