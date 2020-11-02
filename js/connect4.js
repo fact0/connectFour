@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			const top = document.createElement("div");
 			// add top class for selecting slot to drop piece, add event listener on click:
 			top.classList.add("top");
+			top.classList.add("p1");
 			top.setAttribute("id", `${x}`);
 			top.addEventListener("click", handleClick);
 			// append first row of divs to grid container:
@@ -118,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// switch players:
 		currPlayer = currPlayer === 1 ? 2 : 1;
-		// Use click event listener and currplayer update code with function currectplayerclick:
-		currentPlayerClick();
+		// Use click event listener and currplayer update code with function, sets correct player piece color for top and current player icon on click:
+		changePlayerPiece();
 	}
 
 	// checkForWin: check board cell-by-cell for "does a win start here?:
@@ -251,45 +252,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	// initializes current player icon to show correct player when starting game:
-	function currentPlayerIcon() {
+	function initPlayerIcon() {
 		let currPlayerIcon = document.querySelector("#current-p");
 		currPlayerIcon.classList.add("piece");
 		currPlayerIcon.classList.add(`p${currPlayer}`);
 		currPlayerIcon.classList.add("fade-in");
 	}
 
-	// function is called on top click, changes play icon passed on what color pallete is selected with paint button:
-	function currentPlayerClick() {
-		let currPlayerIcon = document.querySelector("#current-p");
-		// if not pressed add or remove standard colors based on which players turn it is:
-		if (!paintBtn.classList.contains("pressed")) {
-			if (currPlayer === 1) {
-				currPlayerIcon.classList.remove("old");
-				currPlayerIcon.classList.remove("p2");
-				currPlayerIcon.classList.add("p1");
-			} else if (currPlayer === 2) {
-				currPlayerIcon.classList.remove("old");
-				currPlayerIcon.classList.remove("p1");
-				currPlayerIcon.classList.add("p2");
-			}
-			// if pressed add or remove "old" styles to p2 based on which players turn it is:
-		} else if (paintBtn.classList.contains("pressed")) {
-			if (currPlayer === 1) {
-				currPlayerIcon.classList.remove("p2");
-				currPlayerIcon.classList.remove("old");
-				currPlayerIcon.classList.add("p1");
-			} else if (currPlayer === 2) {
-				currPlayerIcon.classList.remove("p2");
-				currPlayerIcon.classList.remove("p1");
-				currPlayerIcon.classList.add("old");
-			}
-		}
-	}
-
 	//
 	function paintButton() {
 		// select board img and player icon for toggle:
-		let currPlayerIcon = document.querySelector("#current-p");
 		let boardImg = document.querySelector("#front img");
 		// on click change board color pallete:
 		paintBtn.addEventListener("click", () => {
@@ -300,33 +272,61 @@ document.addEventListener("DOMContentLoaded", function () {
 				paintBtn.classList.toggle("pressed");
 				boardImg.setAttribute("src", "img/boardSmallestOld.png");
 			}
-			// update current player icon accordingly:
-			if (!paintBtn.classList.contains("pressed")) {
-				if (currPlayer === 1) {
-					currPlayerIcon.classList.remove("old");
-					currPlayerIcon.classList.remove("p2");
-					currPlayerIcon.classList.add("p1");
-				} else if (currPlayer === 2) {
-					currPlayerIcon.classList.remove("old");
-					currPlayerIcon.classList.remove("p1");
-					currPlayerIcon.classList.add("p2");
-				}
-			} else if (paintBtn.classList.contains("pressed")) {
-				if (currPlayer === 1) {
-					currPlayerIcon.classList.remove("p2");
-					currPlayerIcon.classList.remove("old");
-					currPlayerIcon.classList.add("p1");
-				} else if (currPlayer === 2) {
-					currPlayerIcon.classList.remove("p2");
-					currPlayerIcon.classList.remove("p1");
-					currPlayerIcon.classList.add("old");
-				}
-			}
 			// same as reset, prevents bug of having multiple different color palletes on board at once:
 			clearPieces();
 			makeBoard();
 			makeHtmlBoard();
+			// update current player icon accordingly:
+			changePlayerPiece();
 		});
+	}
+	// function controls updating piece colors on top row for hover effect and current player icon:
+	function changePlayerPiece() {
+		let currPlayerIcon = document.querySelector("#current-p");
+		let topPieces = document.querySelectorAll(".top");
+		if (!paintBtn.classList.contains("pressed")) {
+			if (currPlayer === 1) {
+				for (piece of topPieces) {
+					console.log(piece);
+					piece.classList.remove("old");
+					piece.classList.remove("p2");
+					piece.classList.add("p1");
+				}
+				currPlayerIcon.classList.remove("old");
+				currPlayerIcon.classList.remove("p2");
+				currPlayerIcon.classList.add("p1");
+			} else if (currPlayer === 2) {
+				for (piece of topPieces) {
+					piece.classList.remove("old");
+					piece.classList.remove("p1");
+					piece.classList.add("p2");
+				}
+				currPlayerIcon.classList.remove("old");
+				currPlayerIcon.classList.remove("p1");
+				currPlayerIcon.classList.add("p2");
+			}
+			// if pressed add or remove "old" styles to p2 based on which players turn it is:
+		} else if (paintBtn.classList.contains("pressed")) {
+			if (currPlayer === 1) {
+				for (piece of topPieces) {
+					piece.classList.remove(".p2");
+					piece.classList.remove(".old");
+					piece.classList.add(".p1");
+				}
+				currPlayerIcon.classList.remove("p2");
+				currPlayerIcon.classList.remove("old");
+				currPlayerIcon.classList.add("p1");
+			} else if (currPlayer === 2) {
+				for (piece of topPieces) {
+					piece.classList.remove("p2");
+					piece.classList.remove("p1");
+					piece.classList.add("old");
+				}
+				currPlayerIcon.classList.remove("p2");
+				currPlayerIcon.classList.remove("p1");
+				currPlayerIcon.classList.add("old");
+			}
+		}
 	}
 	// start bg music and run main functions:
 	function startGame() {
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		// makes game start, transitions:
 		start.classList.add("playing");
 		// update player icon before fade in:
-		currentPlayerIcon();
+		initPlayerIcon();
 		// a bunch of elements fade in:
 		for (img of optionBtns) {
 			img.classList.add("playing");
