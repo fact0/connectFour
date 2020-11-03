@@ -15,6 +15,7 @@ restart button in game
 -slot hover animation
 -button design
 -comments
+-code paint button to not reset game
 
 more features:
 smaller board pngs for media queries
@@ -24,3 +25,6 @@ three.js space screensaver background
 
 fixes:
 -refactor
+-update sound function
+-OO updates
+-update background/gradient?

@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		// adds styles to div to make it looks like a game piece:
 		piece.classList.add("piece");
+
 		// checks if styles to be applied to new piece are from the correct color pallete, this is if the paint button is pressed:
 		if (!paintBtn.classList.contains("pressed")) {
 			piece.classList.add(`p${currPlayer}`);
@@ -272,22 +273,24 @@ document.addEventListener("DOMContentLoaded", function () {
 				paintBtn.classList.toggle("pressed");
 				boardImg.setAttribute("src", "img/boardSmallestOld.png");
 			}
-			// same as reset, prevents bug of having multiple different color palletes on board at once:
-			clearPieces();
-			makeBoard();
-			makeHtmlBoard();
 			// update current player icon accordingly:
 			changePlayerPiece();
 		});
 	}
 	// function controls updating piece colors on top row for hover effect and current player icon:
 	function changePlayerPiece() {
+		// selects game pieces to have color pallete swapped:
+		let boardPiecesP2 = document.querySelectorAll(".piece.p2");
+		let boardPiecesOld = document.querySelectorAll(".piece.old");
 		let currPlayerIcon = document.querySelector("#current-p");
 		let topPieces = document.querySelectorAll(".top");
 		if (!paintBtn.classList.contains("pressed")) {
+			for (piece of boardPiecesOld) {
+				piece.classList.remove("old");
+				piece.classList.add("p2");
+			}
 			if (currPlayer === 1) {
 				for (piece of topPieces) {
-					console.log(piece);
 					piece.classList.remove("old");
 					piece.classList.remove("p2");
 					piece.classList.add("p1");
@@ -305,8 +308,12 @@ document.addEventListener("DOMContentLoaded", function () {
 				currPlayerIcon.classList.remove("p1");
 				currPlayerIcon.classList.add("p2");
 			}
-			// if pressed add or remove "old" styles to p2 based on which players turn it is:
+		// if pressed add or remove "old" styles to p2 based on which players turn it is:
 		} else if (paintBtn.classList.contains("pressed")) {
+			for (piece of boardPiecesP2) {
+				piece.classList.remove("p2");
+				piece.classList.add("old");
+			}
 			if (currPlayer === 1) {
 				for (piece of topPieces) {
 					piece.classList.remove(".p2");
