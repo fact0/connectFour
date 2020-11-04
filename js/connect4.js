@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.width = width;
 			this.height = height;
 			// active player: 1 or 2
-			this.currPlayer = p1;
+			this.currPlayer = 1;
 			this.makeBoard();
 			this.makeHtmlBoard();
 			// select options button class to add fade effect to button container:
@@ -60,6 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		makeHtmlBoard() {
 			// select css grid container:
 			const board = document.querySelector(".grid-container");
+			// store a reference to the handleClick bound function
+			// so that we can remove the event listener correctly later
+			this.handleClick = this.handleClick.bind(this);
 			// TODO: add comment for this code
 			for (let x = 0; x < this.width; x++) {
 				const top = document.createElement("div");
@@ -67,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				top.classList.add("top");
 				top.classList.add("p1");
 				top.setAttribute("id", `${x}`);
-				top.addEventListener("click", handleClick);
+				top.addEventListener("click", this.handleClick);
 				// append first row of divs to grid container:
 				board.append(top);
 			}
@@ -99,19 +102,19 @@ document.addEventListener("DOMContentLoaded", function () {
 			const piece = document.createElement("div");
 			// select sound effect for when piece is dropped, checks if mute button is pressed:
 			const drop = new Sound("sound/drop.wav");
-			if (!muteBtn.classList.contains("pressed")) {
+			if (!this.muteBtn.classList.contains("pressed")) {
 				drop.play();
 			}
 			// adds styles to div to make it looks like a game piece:
 			piece.classList.add("piece");
 
 			// checks if styles to be applied to new piece are from the correct color pallete, this is if the paint button is pressed:
-			if (!paintBtn.classList.contains("pressed")) {
-				piece.classList.add(`p${currPlayer}`);
+			if (!this.paintBtn.classList.contains("pressed")) {
+				piece.classList.add(`p${this.currPlayer}`);
 				// if button is pressed, apply "old" styles to player 2:
-			} else if (paintBtn.classList.contains("pressed")) {
+			} else if (this.paintBtn.classList.contains("pressed")) {
 				if (currPlayer === 1) {
-					piece.classList.add(`p${currPlayer}`);
+					piece.classList.add(`p${this.currPlayer}`);
 				} else if (currPlayer === 2) {
 					piece.classList.add(`old`);
 				}
@@ -152,33 +155,33 @@ document.addEventListener("DOMContentLoaded", function () {
 			// Use click event listener and currplayer update code with function, sets correct player piece color for top and current player icon on click:
 			this.changePlayerPiece();
 		}
-
+		// get array of winning pieces xy coords and applies styles to the pieces in the winning coords:
+		winPiece = (cells) => {
+			this.winners = [];
+			// checks if positions for winning pattern is found in game board array:
+			cells.forEach(([y, x]) => {
+				if (
+					y >= 0 &&
+					y < this.height &&
+					x >= 0 &&
+					x < this.width &&
+					this.board[y][x] === this.currPlayer
+				) {
+					// pushes coords of winning pieces to array:
+					winners.push([y, x]);
+				}
+			});
+			// iterates through array and gets the winning coords of spot then applies styles to the coorisponding piece in that spot:
+			for (i = 0; i < winners.length; i++) {
+				let y = winners[i][0];
+				let x = winners[i][1];
+				document.getElementById(`${y}-${x}`).childNodes[0].classList.add("shiny");
+			}
+		};
 		// checkForWin: check board cell-by-cell for "does a win start here?:
 		checkForWin() {
-			// get array of winning pieces xy coords and applies styles to the pieces in the winning coords:
-			winPiece = (cells) => {
-				const winners = [];
-				// checks if positions for winning pattern is found in game board array:
-				cells.forEach(([y, x]) => {
-					if (
-						y >= 0 &&
-						y < this.height &&
-						x >= 0 &&
-						x < this.width &&
-						this.board[y][x] === this.currPlayer
-					) {
-						// pushes coords of winning pieces to array:
-						winners.push([y, x]);
-					}
-				});
-				// iterates through array and gets the winning coords of spot then applies styles to the coorisponding piece in that spot:
-				for (i = 0; i < winners.length; i++) {
-					let y = winners[i][0];
-					let x = winners[i][1];
-					document.getElementById(`${y}-${x}`).childNodes[0].classList.add("shiny");
-				}
-			};
-
+			// check for and save winning pieces:
+			this.winPiece();
 			_win = (cells) => {
 				// Check four cells to see if they're all color of current player
 				//  - cells: list of four (y, x) cells
@@ -240,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// toggles classes ta play and stop audio:
 		muteButton() {
-			muteBtn.addEventListener("click", () => {
+			this.muteBtn.addEventListener("click", () => {
 				if (muteBtn.classList.contains("pressed")) {
 					muteBtn.classList.toggle("pressed");
 					this.bgMusic.play();
@@ -252,14 +255,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 		// resets pieces, empties board array and empties grid container html contents:
 		resetButton() {
-			resetBtn.addEventListener("mousedown", () => {
+			this.resetBtn.addEventListener("mousedown", () => {
 				resetBtn.classList.toggle("pressed");
 				this.clearPieces();
 				this.makeBoard();
 				this.makeHtmlBoard();
 			});
 			// this is so the icon toggles on mouseup
-			resetBtn.addEventListener("mouseup", () => {
+			this.resetBtn.addEventListener("mouseup", () => {
 				resetBtn.classList.toggle("pressed");
 			});
 		}
@@ -268,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		initPlayerIcon() {
 			let currPlayerIcon = document.querySelector("#current-p");
 			currPlayerIcon.classList.add("piece");
-			currPlayerIcon.classList.add(`p${currPlayer}`);
+			currPlayerIcon.classList.add(`p${this.currPlayer}`);
 			currPlayerIcon.classList.add("fade-in");
 		}
 
@@ -277,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			// select board img and player icon for toggle:
 			let boardImg = document.querySelector("#front img");
 			// on click change board color pallete:
-			paintBtn.addEventListener("click", () => {
+			this.paintBtn.addEventListener("click", () => {
 				if (paintBtn.classList.contains("pressed")) {
 					paintBtn.classList.toggle("pressed");
 					boardImg.setAttribute("src", "img/boardSmallest.png");
@@ -396,15 +399,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		startGame() {
 			this.bgMusic.play();
 			this.bgMusic.sound.loop = true;
-			muteButton();
-			paintButton();
-			resetButton();
+			this.muteButton();
+			this.paintButton();
+			this.resetButton();
 			// makes game start, transitions:
 			start.classList.add("playing");
 			// update player icon before fade in:
-			initPlayerIcon();
+			this.initPlayerIcon();
 			// a bunch of elements fade in:
-			for (img of optionBtns) {
+			for (img.bind(this) of this.optionBtns) {
 				img.classList.add("playing");
 				img.classList.add("fade-in");
 			}
