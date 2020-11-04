@@ -1,12 +1,47 @@
 document.addEventListener("DOMContentLoaded", function () {
-	// set variables for board width and height to be used for various calculations:
-	const WIDTH = 7;
-	const HEIGHT = 6;
+	// initialize Game class to define new game objects:
+	// class Game {
+	// 	constructor(p1, p2, width = 7, height = 6) {
+	// 		// pass in players into array:
+	// 		this.players = [p1, p2];
+	// 		// set variables for board width and height to be used for various calculations:
+	// 		this.width = width;
+	// 		this.height = height;
+	// 		this.currPlayer = p1;
+	// 		this.makeBoard();
+	// 		this.makeHtmlBoard();
+	// 	}
+	// }
+
+	class Sound {
+		constructor(src){
+		this.sound = document.createElement("audio");
+		this.sound.src = src;
+		this.sound.setAttribute("preload", "auto");
+		this.sound.setAttribute("controls", "none");
+		this.sound.style.display = "none";
+		document.body.appendChild(this.sound);
+		}
+		play() {
+			this.sound.play();
+		}
+		stop() {
+			this.sound.pause();
+		}
+		duck() {
+			this.sound.volume = 0.5;
+		}
+		full() {
+			this.sound.volume = 1;
+		}
+	}
+	let HEIGHT = 6;
+	let WIDTH = 7;
 	// active player: 1 or 2
 	let currPlayer = 1;
 	let board = [];
 	//initialize varible for bg music:
-	let bgMusic = new sound("sound/bg.mp3");
+	let bgMusic = new Sound("sound/bg.mp3");
 	// select options button class to add fade effect to button container:
 	let optionBtns = document.querySelectorAll(".option-btn img");
 	// select buttons for thier various event listener actions:
@@ -68,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		// create piece div:
 		const piece = document.createElement("div");
 		// select sound effect for when piece is dropped, checks if mute button is pressed:
-		let drop = new sound("sound/drop.wav");
+		let drop = new Sound("sound/drop.wav");
 		if (!muteBtn.classList.contains("pressed")) {
 			drop.play();
 		}
@@ -205,27 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 
-	// global sound function to start, pause, change volume of sound effects and bg music:
-	function sound(src) {
-		this.sound = document.createElement("audio");
-		this.sound.src = src;
-		this.sound.setAttribute("preload", "auto");
-		this.sound.setAttribute("controls", "none");
-		this.sound.style.display = "none";
-		document.body.appendChild(this.sound);
-		this.play = function () {
-			this.sound.play();
-		};
-		this.stop = function () {
-			this.sound.pause();
-		};
-		this.duck = function () {
-			this.sound.volume = 0.5;
-		};
-		this.full = function () {
-			this.sound.volume = 1;
-		};
-	}
 	// toggles classes ta play and stop audio:
 	function muteButton() {
 		muteBtn.addEventListener("click", () => {
@@ -308,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				currPlayerIcon.classList.remove("p1");
 				currPlayerIcon.classList.add("p2");
 			}
-		// if pressed add or remove "old" styles to p2 based on which players turn it is:
+			// if pressed add or remove "old" styles to p2 based on which players turn it is:
 		} else if (paintBtn.classList.contains("pressed")) {
 			for (piece of boardPiecesP2) {
 				piece.classList.remove("p2");
@@ -366,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	// end game results screen
 	function endGame(msg) {
 		// game over sound effect:
-		let win = new sound("sound/win.wav");
+		let win = new Sound("sound/win.wav");
 		let message = document.getElementById("message");
 		let end = document.getElementById("end");
 		// lower volume:
