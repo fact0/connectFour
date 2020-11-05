@@ -34,12 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.currPlayer = 1;
 			this.makeBoard();
 			this.makeHtmlBoard();
-			// select options button class to add fade effect to button container:
-			this.optionBtns = document.querySelectorAll(".option-btn img");
 			// select buttons for thier various event listener actions:
 			this.muteBtn = document.querySelector("#mute-button img");
 			this.resetBtn = document.querySelector("#reset-button img");
 			this.paintBtn = document.querySelector("#paint-button img");
+			// select options button class to add fade effect to button container:
+			this.optionBtns = document.querySelectorAll(".option-btn img");
 			// select container for transition:
 			this.container = document.querySelector(".container");
 			//initialize varible for bg music:
@@ -113,9 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
 				piece.classList.add(`p${this.currPlayer}`);
 				// if button is pressed, apply "old" styles to player 2:
 			} else if (this.paintBtn.classList.contains("pressed")) {
-				if (currPlayer === 1) {
+				if (this.currPlayer === 1) {
 					piece.classList.add(`p${this.currPlayer}`);
-				} else if (currPlayer === 2) {
+				} else if (this.currPlayer === 2) {
 					piece.classList.add(`old`);
 				}
 			}
@@ -139,10 +139,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			// place piece in board and add to HTML grid container:
 			this.board[y][x] = this.currPlayer;
 			this.placeInTable(y, x);
-
 			// check for win:
 			if (this.checkForWin()) {
-				return this.endGame(`Player ${currPlayer} wins!`);
+				return this.endGame(`Player ${this.currPlayer} wins!`);
 			}
 
 			// check for tie:
@@ -156,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.changePlayerPiece();
 		}
 		// get array of winning pieces xy coords and applies styles to the pieces in the winning coords:
-		winPiece = (cells) => {
+		winPiece(cells) {
 			this.winners = [];
 			// checks if positions for winning pattern is found in game board array:
 			cells.forEach(([y, x]) => {
@@ -168,34 +167,32 @@ document.addEventListener("DOMContentLoaded", function () {
 					this.board[y][x] === this.currPlayer
 				) {
 					// pushes coords of winning pieces to array:
-					winners.push([y, x]);
+					this.winners.push([y, x]);
 				}
 			});
 			// iterates through array and gets the winning coords of spot then applies styles to the coorisponding piece in that spot:
-			for (i = 0; i < winners.length; i++) {
-				let y = winners[i][0];
-				let x = winners[i][1];
+			for (this.i = 0; this.i < this.winners.length; this.i++) {
+				let y = this.winners[this.i][0];
+				let x = this.winners[this.i][1];
 				document.getElementById(`${y}-${x}`).childNodes[0].classList.add("shiny");
 			}
-		};
+		}
 		// checkForWin: check board cell-by-cell for "does a win start here?:
-		checkForWin() {
-			// check for and save winning pieces:
-			this.winPiece();
-			_win = (cells) => {
-				// Check four cells to see if they're all color of current player
-				//  - cells: list of four (y, x) cells
-				//  - returns true if all are legal coordinates & all match currPlayer
-				cells.every(
-					([y, x]) =>
-						y >= 0 &&
-						y < this.height &&
-						x >= 0 &&
-						x < this.width &&
-						this.board[y][x] === this.currPlayer
-				);
-			};
+		_win(cells) {
+			// Check four cells to see if they're all color of current player
+			//  - cells: list of four (y, x) cells
+			//  - returns true if all are legal coordinates & all match currPlayer
 
+			return cells.every(
+				([y, x]) =>
+					y >= 0 &&
+					y < this.height &&
+					x >= 0 &&
+					x < this.width &&
+					this.board[y][x] === this.currPlayer
+			);
+		}
+		checkForWin() {
 			// iterates through positions in array in sections using 4 length, each array contains the coords for winning combinations of pieces but different orientations:
 			for (let y = 0; y < this.height; y++) {
 				for (let x = 0; x < this.width; x++) {
@@ -224,17 +221,17 @@ document.addEventListener("DOMContentLoaded", function () {
 						[y + 3, x - 3],
 					];
 					// if coords in game board array meet requirments of same player color and correct orientation, pass the orientation and coords to winpiece and return true to _win:
-					if (_win(horiz)) {
-						winPiece(horiz);
+					if (this._win(horiz)) {
+						this.winPiece(horiz);
 						return true;
-					} else if (_win(vert)) {
-						winPiece(vert);
+					} else if (this._win(vert)) {
+						this.winPiece(vert);
 						return true;
-					} else if (_win(diagDR)) {
-						winPiece(diagDR);
+					} else if (this._win(diagDR)) {
+						this.winPiece(diagDR);
 						return true;
-					} else if (_win(diagDL)) {
-						winPiece(diagDL);
+					} else if (this._win(diagDL)) {
+						this.winPiece(diagDL);
 						return true;
 					}
 				}
@@ -244,11 +241,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		// toggles classes ta play and stop audio:
 		muteButton() {
 			this.muteBtn.addEventListener("click", () => {
-				if (muteBtn.classList.contains("pressed")) {
-					muteBtn.classList.toggle("pressed");
+				if (this.muteBtn.classList.contains("pressed")) {
+					this.muteBtn.classList.toggle("pressed");
 					this.bgMusic.play();
 				} else {
-					muteBtn.classList.toggle("pressed");
+					this.muteBtn.classList.toggle("pressed");
 					this.bgMusic.stop();
 				}
 			});
@@ -256,14 +253,14 @@ document.addEventListener("DOMContentLoaded", function () {
 		// resets pieces, empties board array and empties grid container html contents:
 		resetButton() {
 			this.resetBtn.addEventListener("mousedown", () => {
-				resetBtn.classList.toggle("pressed");
+				this.resetBtn.classList.toggle("pressed");
 				this.clearPieces();
 				this.makeBoard();
 				this.makeHtmlBoard();
 			});
 			// this is so the icon toggles on mouseup
 			this.resetBtn.addEventListener("mouseup", () => {
-				resetBtn.classList.toggle("pressed");
+				this.resetBtn.classList.toggle("pressed");
 			});
 		}
 
@@ -281,11 +278,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			let boardImg = document.querySelector("#front img");
 			// on click change board color pallete:
 			this.paintBtn.addEventListener("click", () => {
-				if (paintBtn.classList.contains("pressed")) {
-					paintBtn.classList.toggle("pressed");
+				if (this.paintBtn.classList.contains("pressed")) {
+					this.paintBtn.classList.toggle("pressed");
 					boardImg.setAttribute("src", "img/boardSmallest.png");
 				} else {
-					paintBtn.classList.toggle("pressed");
+					this.paintBtn.classList.toggle("pressed");
 					boardImg.setAttribute("src", "img/boardSmallestOld.png");
 				}
 				// update current player icon accordingly:
@@ -293,64 +290,149 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		}
 
-		// function controls updating piece colors on top row for hover effect and current player icon:
-		changePlayerPiece() {
-			// selects game pieces to have color pallete swapped:
-			let boardPiecesP2 = document.querySelectorAll(".piece.p2");
-			let boardPiecesOld = document.querySelectorAll(".piece.old");
-			let currPlayerIcon = document.querySelector("#current-p");
-			let topPieces = document.querySelectorAll(".top");
-			if (!paintBtn.classList.contains("pressed")) {
-				for (piece of boardPiecesOld) {
-					piece.classList.remove("old");
-					piece.classList.add("p2");
-				}
-				if (currPlayer === 1) {
-					for (piece of topPieces) {
-						piece.classList.remove("old");
-						piece.classList.remove("p2");
-						piece.classList.add("p1");
-					}
-					currPlayerIcon.classList.remove("old");
-					currPlayerIcon.classList.remove("p2");
-					currPlayerIcon.classList.add("p1");
-				} else if (currPlayer === 2) {
-					for (piece of topPieces) {
-						piece.classList.remove("old");
-						piece.classList.remove("p1");
-						piece.classList.add("p2");
-					}
-					currPlayerIcon.classList.remove("old");
-					currPlayerIcon.classList.remove("p1");
-					currPlayerIcon.classList.add("p2");
-				}
-				// if pressed add or remove "old" styles to p2 based on which players turn it is:
-			} else if (paintBtn.classList.contains("pressed")) {
-				for (piece of boardPiecesP2) {
-					piece.classList.remove("p2");
-					piece.classList.add("old");
-				}
-				if (currPlayer === 1) {
-					for (piece of topPieces) {
-						piece.classList.remove(".p2");
-						piece.classList.remove(".old");
-						piece.classList.add(".p1");
-					}
-					currPlayerIcon.classList.remove("p2");
-					currPlayerIcon.classList.remove("old");
-					currPlayerIcon.classList.add("p1");
-				} else if (currPlayer === 2) {
-					for (piece of topPieces) {
-						piece.classList.remove("p2");
-						piece.classList.remove("p1");
-						piece.classList.add("old");
-					}
-					currPlayerIcon.classList.remove("p2");
-					currPlayerIcon.classList.remove("p1");
-					currPlayerIcon.classList.add("old");
-				}
+		// uses logic from changePlayerPiece() to remove classes from board pieces, top pieces and currPlayerIcon:
+		replaceClassesForItem(item, classesToRemove, classesToAdd) {
+			for (this.className in classesToRemove) {
+				item.classList.remove(this.className);
+				// console.log(item);
+			}
+			for (this.className in classesToAdd) {
+				item.classList.add(this.className);
+				// console.log(item);
 			}
 		}
+
+		// method controls updating piece colors on top row for hover effect, current player icon, and board piece pallete swap:
+		changePlayerPiece() {
+			// variable to use for boolean when pressed:
+			const isPaintButtonPressed = this.paintBtn.classList.contains("pressed");
+			console.log(isPaintButtonPressed);
+			// if pressed select select new pallete pieces (p2) classes to be modified, if not select old pallete pieces.
+			const boardToBeUsed = isPaintButtonPressed
+				? document.querySelectorAll(".piece.p2")
+				: document.querySelectorAll(".piece.old");
+			console.log(boardToBeUsed);
+			// selects game pieces to have color pallete swapped:
+			let currPlayerIcon = document.querySelector("#current-p");
+			let topPieces = document.querySelectorAll(".top");
+			// if pressed remove p2 else remove old:
+			const boardPiecesToBeRemoved = isPaintButtonPressed ? ["p2"] : ["old"];
+			// if pressed add old else remove p2:
+			const boardPiecesToBeAdded = isPaintButtonPressed ? ["old"] : ["p2"];
+			// if pressed, if current player is 1, remove p2 and old class, if player is 2, remove p2 and p1 class
+			// if !pressed, if current player is 1, remove old and p2 class, else if player is 2, remove old and p1 class:
+			const topClassesToBeRemoved = isPaintButtonPressed
+				? this.currPlayer === 1
+					? ["p2", "old"]
+					: ["p2", "p1"]
+				: this.currPlayer === 1
+				? ["old", "p2"]
+				: ["old", "p1"];
+			// if pressed, if current player is 1, add p1 class, else if player is 2, add old class
+			// if !pressed, if current player is 1, add p1 class, else if player is 2, add p2 class:
+			const topClassesToBeAdded = isPaintButtonPressed
+				? this.currPlayer === 1
+					? ["p1"]
+					: ["old"]
+				: this.currPlayer === 1
+				? ["p1"]
+				: ["p2"];
+			// if pressed, if current player is 1, remove p2 and old class, if player 2, remove p2 and p1 class
+			// if !pressed, if current player is 2, pass in topClassesToBeRemoved logic:
+			const currPlayerClassesToBeRemoved = isPaintButtonPressed
+				? this.currPlayer === 1
+					? ["p2", "old"]
+					: ["p2", "p1"]
+				: topClassesToBeRemoved;
+			// if pressed, if current player is 1, add p1, if player 2, add old class
+			// if !pressed, if current player 2 is pass in topClassesToBeRemoved logic:
+			const currPlayerClassesToBeAdded = isPaintButtonPressed
+				? this.currPlayer === 1
+					? ["p1"]
+					: ["old"]
+				: topClassesToBeAdded;
+
+			// iterates through player board pieces, passes them into replace method, and replaces classes
+			for (this.piece of boardToBeUsed) {
+				this.replaceClassesForItem(
+					this.piece,
+					boardPiecesToBeRemoved,
+					boardPiecesToBeAdded
+				);
+			}
+			// iterates through top row pieces, passes them into replace method, and replaces classeses
+			for (this.topPiece of topPieces) {
+				this.replaceClassesForItem(
+					this.topPiece,
+					topClassesToBeRemoved,
+					topClassesToBeAdded
+				);
+			}
+			// passes currPlayerIcon into replace method, and replaces classeses
+			this.replaceClassesForItem(
+				currPlayerIcon,
+				currPlayerClassesToBeRemoved,
+				currPlayerClassesToBeAdded
+			);
+		}
+		// function controls updating piece colors on top row for hover effect and current player icon:
+		// changePlayerPiece() {
+		// 	// selects game pieces to have color pallete swapped:
+		// 	let boardPiecesP2 = document.querySelectorAll(".piece.p2");
+		// 	let boardPiecesOld = document.querySelectorAll(".piece.old");
+		// 	let currPlayerIcon = document.querySelector("#current-p");
+		// 	let topPieces = document.querySelectorAll(".top");
+		// 	if (!this.paintBtn.classList.contains("pressed")) {
+		// 		for (this.piece of boardPiecesOld) {
+		// 			this.piece.classList.remove("old");
+		// 			this.piece.classList.add("p2");
+		// 		}
+		// 		if (this.currPlayer === 1) {
+		// 			for (this.piece of topPieces) {
+		// 				this.piece.classList.remove("old");
+		// 				this.piece.classList.remove("p2");
+		// 				this.piece.classList.add("p1");
+		// 			}
+		// 			currPlayerIcon.classList.remove("old");
+		// 			currPlayerIcon.classList.remove("p2");
+		// 			currPlayerIcon.classList.add("p1");
+		// 		} else if (this.currPlayer === 2) {
+		// 			for (this.piece of topPieces) {
+		// 				this.piece.classList.remove("old");
+		// 				this.piece.classList.remove("p1");
+		// 				this.piece.classList.add("p2");
+		// 			}
+		// 			currPlayerIcon.classList.remove("old");
+		// 			currPlayerIcon.classList.remove("p1");
+		// 			currPlayerIcon.classList.add("p2");
+		// 		}
+		// 		// if pressed add or remove "old" styles to p2 based on which players turn it is:
+		// 	} else if (this.paintBtn.classList.contains("pressed")) {
+		// 		for (this.piece of boardPiecesP2) {
+		// 			this.piece.classList.remove("p2");
+		// 			this.piece.classList.add("old");
+		// 		}
+		// 		if (this.currPlayer === 1) {
+		// 			for (this.piece of topPieces) {
+		// 				this.piece.classList.remove(".p2");
+		// 				this.piece.classList.remove(".old");
+		// 				this.piece.classList.add(".p1");
+		// 			}
+		// 			currPlayerIcon.classList.remove("p2");
+		// 			currPlayerIcon.classList.remove("old");
+		// 			currPlayerIcon.classList.add("p1");
+		// 		} else if (this.currPlayer === 2) {
+		// 			for (this.piece of topPieces) {
+		// 				this.piece.classList.remove("p2");
+		// 				this.piece.classList.remove("p1");
+		// 				this.piece.classList.add("old");
+		// 			}
+		// 			currPlayerIcon.classList.remove("p2");
+		// 			currPlayerIcon.classList.remove("p1");
+		// 			currPlayerIcon.classList.add("old");
+		// 		}
+		// 	}
+		// }
 
 		// clears game board html, and empties array used in reset function:
 		clearPieces() {
@@ -368,7 +450,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			// lower volume:
 			this.bgMusic.duck();
 			// dont play if muted
-			if (!muteBtn.classList.contains("pressed")) {
+			if (!this.muteBtn.classList.contains("pressed")) {
 				win.play();
 			}
 			// display winner text:
@@ -385,16 +467,23 @@ document.addEventListener("DOMContentLoaded", function () {
 			let end = document.getElementById("end");
 			btn.addEventListener("click", () => {
 				// resets everything and fades out:
-				clearPieces();
+				this.clearPieces();
 				end.classList.remove("game-over");
 				end.classList.remove("fade-in-fast");
-				makeBoard();
-				makeHtmlBoard();
+				this.makeBoard();
+				this.makeHtmlBoard();
 				// return volume:
 				this.bgMusic.full();
 			});
 		}
-
+		// a bunch of elements fade in on game start:
+		elementsFadeIn() {
+			for (this.img of this.optionBtns) {
+				this.img.classList.add("playing");
+				this.img.classList.add("fade-in");
+			}
+			this.container.classList.add("fade-in");
+		}
 		// start bg music and run main functions:
 		startGame() {
 			this.bgMusic.play();
@@ -406,12 +495,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			start.classList.add("playing");
 			// update player icon before fade in:
 			this.initPlayerIcon();
-			// a bunch of elements fade in:
-			for (img.bind(this) of this.optionBtns) {
-				img.classList.add("playing");
-				img.classList.add("fade-in");
-			}
-			container.classList.add("fade-in");
+			this.elementsFadeIn();
 		}
 	}
 
