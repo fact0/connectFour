@@ -277,6 +277,26 @@ document.addEventListener("DOMContentLoaded", function () {
 			changePlayerPiece();
 		});
 	}
+
+	function ColorsToChange(piece, classToRemove, classToAdd) {
+		for (color of classToRemove) {
+			piece.classList.remove(color);
+		}
+		for (color of classToAdd) {
+			piece.classList.add(color);
+		}
+	}
+
+	// function swapIfPressed(isPressed) {
+	// 	let colorsToRemove = isPressed !== true ? ['old'] : [p2];
+	// 	return ColorsToChange(piece)
+	// 	// currPlayer = currPlayer === 1 ? 2 : 1;
+	// 	}
+	// 	// ["old"], ["p2"]
+	// 	//if is pressed select these colors to add or remove
+	// 	// ternary operators to decide which colors to remove
+	// }
+
 	// function controls updating piece colors on top row for hover effect and current player icon:
 	function changePlayerPiece() {
 		// selects game pieces to have color pallete swapped:
@@ -286,8 +306,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		let topPieces = document.querySelectorAll(".top");
 		if (!paintBtn.classList.contains("pressed")) {
 			for (piece of boardPiecesOld) {
-				piece.classList.remove("old");
-				piece.classList.add("p2");
+				ColorsToChange(piece, ["old"], ["p2"]);
+				console.log(piece);
 			}
 			if (currPlayer === 1) {
 				for (piece of topPieces) {
@@ -308,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				currPlayerIcon.classList.remove("p1");
 				currPlayerIcon.classList.add("p2");
 			}
-		// if pressed add or remove "old" styles to p2 based on which players turn it is:
+			// if pressed add or remove "old" styles to p2 based on which players turn it is:
 		} else if (paintBtn.classList.contains("pressed")) {
 			for (piece of boardPiecesP2) {
 				piece.classList.remove("p2");
@@ -316,9 +336,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 			if (currPlayer === 1) {
 				for (piece of topPieces) {
-					piece.classList.remove(".p2");
-					piece.classList.remove(".old");
-					piece.classList.add(".p1");
+					piece.classList.remove("p2");
+					piece.classList.remove("old");
+					piece.classList.add("p1");
 				}
 				currPlayerIcon.classList.remove("p2");
 				currPlayerIcon.classList.remove("old");
