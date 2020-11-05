@@ -292,13 +292,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// uses logic from changePlayerPiece() to remove classes from board pieces, top pieces and currPlayerIcon:
 		replaceClassesForItem(item, classesToRemove, classesToAdd) {
-			for (this.className in classesToRemove) {
+			for (this.className of classesToRemove) {
 				item.classList.remove(this.className);
-				// console.log(item);
 			}
-			for (this.className in classesToAdd) {
+			for (this.className of classesToAdd) {
 				item.classList.add(this.className);
-				// console.log(item);
 			}
 		}
 
@@ -306,12 +304,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		changePlayerPiece() {
 			// variable to use for boolean when pressed:
 			const isPaintButtonPressed = this.paintBtn.classList.contains("pressed");
-			console.log(isPaintButtonPressed);
 			// if pressed select select new pallete pieces (p2) classes to be modified, if not select old pallete pieces.
 			const boardToBeUsed = isPaintButtonPressed
 				? document.querySelectorAll(".piece.p2")
 				: document.querySelectorAll(".piece.old");
-			console.log(boardToBeUsed);
 			// selects game pieces to have color pallete swapped:
 			let currPlayerIcon = document.querySelector("#current-p");
 			let topPieces = document.querySelectorAll(".top");
@@ -375,64 +371,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				currPlayerClassesToBeAdded
 			);
 		}
-		// function controls updating piece colors on top row for hover effect and current player icon:
-		// changePlayerPiece() {
-		// 	// selects game pieces to have color pallete swapped:
-		// 	let boardPiecesP2 = document.querySelectorAll(".piece.p2");
-		// 	let boardPiecesOld = document.querySelectorAll(".piece.old");
-		// 	let currPlayerIcon = document.querySelector("#current-p");
-		// 	let topPieces = document.querySelectorAll(".top");
-		// 	if (!this.paintBtn.classList.contains("pressed")) {
-		// 		for (this.piece of boardPiecesOld) {
-		// 			this.piece.classList.remove("old");
-		// 			this.piece.classList.add("p2");
-		// 		}
-		// 		if (this.currPlayer === 1) {
-		// 			for (this.piece of topPieces) {
-		// 				this.piece.classList.remove("old");
-		// 				this.piece.classList.remove("p2");
-		// 				this.piece.classList.add("p1");
-		// 			}
-		// 			currPlayerIcon.classList.remove("old");
-		// 			currPlayerIcon.classList.remove("p2");
-		// 			currPlayerIcon.classList.add("p1");
-		// 		} else if (this.currPlayer === 2) {
-		// 			for (this.piece of topPieces) {
-		// 				this.piece.classList.remove("old");
-		// 				this.piece.classList.remove("p1");
-		// 				this.piece.classList.add("p2");
-		// 			}
-		// 			currPlayerIcon.classList.remove("old");
-		// 			currPlayerIcon.classList.remove("p1");
-		// 			currPlayerIcon.classList.add("p2");
-		// 		}
-		// 		// if pressed add or remove "old" styles to p2 based on which players turn it is:
-		// 	} else if (this.paintBtn.classList.contains("pressed")) {
-		// 		for (this.piece of boardPiecesP2) {
-		// 			this.piece.classList.remove("p2");
-		// 			this.piece.classList.add("old");
-		// 		}
-		// 		if (this.currPlayer === 1) {
-		// 			for (this.piece of topPieces) {
-		// 				this.piece.classList.remove(".p2");
-		// 				this.piece.classList.remove(".old");
-		// 				this.piece.classList.add(".p1");
-		// 			}
-		// 			currPlayerIcon.classList.remove("p2");
-		// 			currPlayerIcon.classList.remove("old");
-		// 			currPlayerIcon.classList.add("p1");
-		// 		} else if (this.currPlayer === 2) {
-		// 			for (this.piece of topPieces) {
-		// 				this.piece.classList.remove("p2");
-		// 				this.piece.classList.remove("p1");
-		// 				this.piece.classList.add("old");
-		// 			}
-		// 			currPlayerIcon.classList.remove("p2");
-		// 			currPlayerIcon.classList.remove("p1");
-		// 			currPlayerIcon.classList.add("old");
-		// 		}
-		// 	}
-		// }
 
 		// clears game board html, and empties array used in reset function:
 		clearPieces() {
