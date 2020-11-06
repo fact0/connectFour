@@ -34,17 +34,18 @@ body {
 }
 
 /* hide on title screen */
-.option-btn img {
+.option-btn i {
 	display: none;
 }
 /* used to fade in buttons on game board transition */
-.option-btn img.playing {
+.option-btn i.playing {
 	display: block;
 	width: 100px;
 	height: 100px;
+	font-size: 90px;
 }
 /* invents icon color */
-.option-btn img.pressed {
+.option-btn i.pressed {
 	filter: invert(1);
 }
 /* current play icon  */

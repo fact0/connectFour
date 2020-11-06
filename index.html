@@ -8,6 +8,7 @@
 		crossorigin="anonymous"
 	/>
 	<link href="css/connect4.css" rel="stylesheet" />
+	<script src="https://kit.fontawesome.com/54c924e34f.js" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div class="start-container" id="start" id="preload-01">
@@ -33,13 +34,14 @@
 	</div>
 	<div class="option-container">
 		<div class="option-btn" id="mute-button">
-			<img src="img/mute.png" style="margin-left: 8px;"/>
+			<i id="muted" class="fas fa-volume-mute"></i>
+			<!-- <i id="unmuted" class="fas fa-volume-up"></i> -->
 		</div>
 		<div class="option-btn" id="reset-button">
-			<img src="img/reset.png" />
+			<i class="fas fa-redo"></i>
 		</div>
 		<div class="option-btn" id="paint-button">
-			<img src="img/paint.png" />
+			<i class="fas fa-palette"></i>
     </div>
     <div class="option-btn" id="current-p"></div>
 	</div>

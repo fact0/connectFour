@@ -35,15 +35,17 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.makeBoard();
 			this.makeHtmlBoard();
 			// select buttons for thier various event listener actions:
-			this.muteBtn = document.querySelector("#mute-button img");
-			this.resetBtn = document.querySelector("#reset-button img");
-			this.paintBtn = document.querySelector("#paint-button img");
+			this.muteBtn = document.querySelector("#mute-button i");
+			this.resetBtn = document.querySelector("#reset-button i");
+			this.paintBtn = document.querySelector("#paint-button i");
 			// select options button class to add fade effect to button container:
-			this.optionBtns = document.querySelectorAll(".option-btn img");
+			this.optionBtns = document.querySelectorAll(".option-btn i");
 			// select container for transition:
 			this.container = document.querySelector(".container");
-			//initialize varible for bg music:
+			//initialize varible for bg music and sound effects:
 			this.bgMusic = new Sound("sound/bg.mp3");
+			this.drop = new Sound("sound/drop.wav");
+			this.win = new Sound("sound/win.wav");
 		}
 
 		// makeBoard: create in-JS board structure:
@@ -100,10 +102,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		placeInTable(y, x) {
 			// create piece div:
 			const piece = document.createElement("div");
-			// select sound effect for when piece is dropped, checks if mute button is pressed:
-			const drop = new Sound("sound/drop.wav");
+			//checks if mute button is pressed for drop sound effect:
 			if (!this.muteBtn.classList.contains("pressed")) {
-				drop.play();
+				this.drop.play();
 			}
 			// adds styles to div to make it looks like a game piece:
 			piece.classList.add("piece");
@@ -381,15 +382,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		// end game results screen
 		endGame(msg) {
-			// game over sound effect:
-			let win = new Sound("sound/win.wav");
 			let message = document.getElementById("message");
 			let end = document.getElementById("end");
 			// lower volume:
 			this.bgMusic.duck();
 			// dont play if muted
 			if (!this.muteBtn.classList.contains("pressed")) {
-				win.play();
+				this.win.play();
 			}
 			// display winner text:
 			message.innerText = `${msg}`;
